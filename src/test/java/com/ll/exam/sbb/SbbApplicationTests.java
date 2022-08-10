@@ -90,4 +90,12 @@ class SbbApplicationTests {
 
 		assertEquals(1, this.questionRepository.count());
 	}
+
+	@Test
+	void testJpa8() {
+		Optional<Question> oq = this.questionRepository.findById(1);
+		Optional<Question> oq2 = this.questionRepository.findById(1);
+
+		assertTrue(oq==oq2);
+	}
 }
