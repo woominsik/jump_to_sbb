@@ -21,14 +21,16 @@ public class AnswerRepositoryTests {
         createSampleData();
     }
 
-    private void createSampleData() {
-
-    }
-
     private void clearData() {
+        QuestionRepositoryTests.clearData(questionRepository);
+
         questionRepository.disableForeignKeyChecks();
         answerRepository.truncate();
         questionRepository.enableForeignKeyChecks();
+    }
+
+    private void createSampleData() {
+        QuestionRepositoryTests.createSampleData(questionRepository);
     }
 
     @Test
