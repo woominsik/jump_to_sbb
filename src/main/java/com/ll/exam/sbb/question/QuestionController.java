@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -47,5 +48,21 @@ public class QuestionController {
     @GetMapping("/create")
     public String questionCreate() {
         return "question_form";
+    }
+
+    @PostMapping("/create")
+    public String questionCreate(Model model, QuestionForm questionform) {
+        if (questionform.getSubject() == null || questionform.getSubject().trim().length() == 0) {
+            model.addAttribute("errorMsg", "제목 좀...");
+            return "question_form";
+        }
+
+        if (questionform.getContent() == null || questionform.getContent().trim().length() == 0) {
+            model.addAttribute("errorMsg", "내용 좀...");
+            return "question_form";
+        }
+
+        questionService.create(questionform.getSubject(), questionform.getContent());
+        return "redirect:/question/list";
     }
 }
