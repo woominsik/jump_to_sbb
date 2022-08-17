@@ -51,18 +51,25 @@ public class QuestionController {
     }
 
     @PostMapping("/create")
-    public String questionCreate(Model model, QuestionForm questionform) {
-        if (questionform.getSubject() == null || questionform.getSubject().trim().length() == 0) {
-            model.addAttribute("errorMsg", "제목 좀...");
+    public String questionCreate(Model model, QuestionForm questionForm) {
+        boolean hasError = false;
+
+        if (questionForm.getSubject() == null || questionForm.getSubject().trim().length() == 0) {
+            model.addAttribute("subjectErrorMsg", "제목 좀...");
+            hasError = true;
+        }
+
+        if (questionForm.getContent() == null || questionForm.getContent().trim().length() == 0) {
+            model.addAttribute("contentErrorMsg", "내용 좀...");
+            hasError = true;
+        }
+
+        if (hasError) {
+            model.addAttribute("questionFrom", questionForm);
             return "question_form";
         }
 
-        if (questionform.getContent() == null || questionform.getContent().trim().length() == 0) {
-            model.addAttribute("errorMsg", "내용 좀...");
-            return "question_form";
-        }
-
-        questionService.create(questionform.getSubject(), questionform.getContent());
-        return "redirect:/question/list";
+        questionService.create(questionForm.getSubject(), questionForm.getContent());
+        return "redirect:/question/list"; // 질문 저장후 질문목록으로 이동
     }
 }
