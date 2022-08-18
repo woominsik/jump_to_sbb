@@ -20,11 +20,13 @@ public class QuestionService {
     public Page<Question> getList(int page) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
+
         return this.questionRepository.findAll(pageable);
     }
 
-    public Question getQuestion(int id) {
+    public Question getQuestion(long id) {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
     }
