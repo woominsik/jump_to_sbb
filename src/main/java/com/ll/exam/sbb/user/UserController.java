@@ -2,6 +2,7 @@ package com.ll.exam.sbb.user;
 
 import javax.validation.Valid;
 
+import lombok.Getter;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -47,5 +48,10 @@ public class UserController {
         }
 
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login_form";
     }
 }
