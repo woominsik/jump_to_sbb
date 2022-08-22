@@ -5,6 +5,8 @@ import com.ll.exam.sbb.answer.AnswerRepository;
 import com.ll.exam.sbb.question.Question;
 import com.ll.exam.sbb.question.QuestionRepository;
 import com.ll.exam.sbb.user.SiteUser;
+import com.ll.exam.sbb.user.UserRepository;
+import com.ll.exam.sbb.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class AnswerRepositoryTests {
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private QuestionRepository questionRepository;
     @Autowired
     private AnswerRepository answerRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @BeforeEach
     void beforeEach() {
@@ -30,19 +37,16 @@ public class AnswerRepositoryTests {
         createSampleData();
     }
 
-    public static void clearData(AnswerRepository answerRepository, QuestionRepository questionRepository) {
-        QuestionRepositoryTests.clearData(questionRepository);
-
-        answerRepository.deleteAll(); // DELETE FROM question;
-        answerRepository.truncateTable();
+    public static void clearData(UserRepository userRepository, AnswerRepository answerRepository, QuestionRepository questionRepository) {
+        UserServiceTests.clearData(userRepository, answerRepository, questionRepository);
     }
 
     private void clearData() {
-        clearData(answerRepository, questionRepository);
+        clearData(userRepository, answerRepository, questionRepository);
     }
 
     private void createSampleData() {
-        QuestionRepositoryTests.createSampleData(questionRepository);
+        QuestionRepositoryTests.createSampleData(userService, questionRepository);
 
         // 관련 답변이 하나없는 상태에서 쿼리 발생
         Question q = questionRepository.findById(1L).get();
