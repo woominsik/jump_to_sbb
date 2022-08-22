@@ -158,7 +158,7 @@ public class QuestionRepositoryTests {
     void createManySampleData() {
         boolean run = false;
 
-        if (run == false) return;
+        if (run == true) return;
 
         IntStream.rangeClosed(3, 300).forEach(id -> {
             Question q = new Question();
