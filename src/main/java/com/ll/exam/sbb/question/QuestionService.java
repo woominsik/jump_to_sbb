@@ -18,27 +18,21 @@ import java.util.List;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    public Page<Question> getList(String kw, int page, String order) {
+    public Page<Question> getList(String kw, int page, String sortCode) {
         List<Sort.Order> sorts = new ArrayList<>();
-        sorts.add(Sort.Order.desc("createDate"));
-        System.out.println("asd"+kw+" "+order);
+
+        switch (sortCode) {
+            case "OLD" -> sorts.add(Sort.Order.asc("id")); // 오래된순
+            default -> sorts.add(Sort.Order.desc("id")); // 최신순
+        }
+
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
 
         if ( kw == null || kw.trim().length() == 0 ) {
-            if(order==null|| order.trim().length() == 0||order.equals("new")){
-                return questionRepository.findAll(pageable);
-            }
-            else{
-                return questionRepository.findAllByOrderByIdAsc(pageable);
-            }
+            return questionRepository.findAll(pageable);
+        }
 
-        }
-        if(order==null|| order.trim().length() == 0){
-            return questionRepository.findDistinctBySubjectContainsOrContentContainsOrAuthor_usernameContainsOrAnswerList_contentContainsOrAnswerList_author_username(kw, kw, kw, kw, kw, pageable);
-        }
-        else{
-            return questionRepository.findDistinctBySubjectContainsOrContentContainsOrAuthor_usernameContainsOrAnswerList_contentContainsOrAnswerList_author_usernameOrderByIdAsc(kw, kw, kw, kw, kw, pageable);
-        }
+        return questionRepository.findDistinctBySubjectContainsOrContentContainsOrAuthor_usernameContainsOrAnswerList_contentContainsOrAnswerList_author_username(kw, kw, kw, kw, kw, pageable);
     }
 
     public Question getQuestion(long id) {
