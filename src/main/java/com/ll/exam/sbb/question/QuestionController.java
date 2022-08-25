@@ -46,7 +46,7 @@ public class QuestionController {
     @GetMapping("/detail/{id}")
     public String detail(Model model, @PathVariable long id, AnswerForm answerForm) {
         Question question = questionService.getQuestion(id);
-
+        questionService.hitCountInc(question);
         model.addAttribute("question", question);
 
         return "question_detail";
